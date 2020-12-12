@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Scripting;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.IO;
+using System.Reflection;
 
 namespace TestWPF
 {
@@ -39,13 +40,15 @@ namespace TestWPF
                 Text += state1.Result.ReturnValue + "\n===========\n";
             });
 
-            await Task.Run(async () =>
-            {
-                var script = CSharpScript.RunAsync(code1 + "var tmain = new TestMain();", ScriptOptions.Default.AddReferences(typeof(TSBase).Assembly).AddImports("TSBase")).Result;
-                await script.ContinueWithAsync("tmain.Run();");
-                var state1 = script.ContinueWithAsync<string>("tmain.Logger");
-                Text += state1.Result.ReturnValue + "\n===========\n";
-            });
+            //await Task.Run(async () =>
+            //{
+            Assembly assembly = Assembly.LoadFrom(@"TSBase.dll");
+            var type = assembly.GetType("TSBaseNS.TSBase");
+            var script = CSharpScript.RunAsync(code1 + "var tmain = new TestMain();", ScriptOptions.Default.AddReferences(type.Assembly).AddImports("TSBaseNS")).Result;
+            await script.ContinueWithAsync("tmain.Run();");
+            var state1 = script.ContinueWithAsync<string>("tmain.Logger");
+            Text += state1.Result.ReturnValue + "\n===========\n";
+            //});
 
         }
 

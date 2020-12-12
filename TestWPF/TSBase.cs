@@ -9,7 +9,7 @@ namespace TestWPF
 
         public (bool result, string log) Test(string testname)
         {
-            Logger += $"{testname} test passed";
+            Logger += $"{testname} test passed (B)";
             return (true, $"{testname} test passed");
         }
 

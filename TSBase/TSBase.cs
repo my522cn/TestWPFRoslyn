@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TSBase
+namespace TSBaseNS
 {
     public class TSBase
     {
@@ -9,7 +9,7 @@ namespace TSBase
 
         public (bool result, string log) Test(string testname)
         {
-            Logger += $"{testname} test passed";
+            Logger += $"{testname} test passed (A)";
             return (true, $"{testname} test passed");
         }
 
